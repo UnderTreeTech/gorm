@@ -55,6 +55,9 @@ type Dialect interface {
 
 	// CurrentDatabase return current database name
 	CurrentDatabase() string
+
+	// ParseSQL return parsed SQL
+	ParseSQL(sql string) string
 }
 
 var dialectsMap = map[string]Dialect{}

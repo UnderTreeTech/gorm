@@ -174,6 +174,11 @@ func (commonDialect) DefaultValueStr() string {
 	return "DEFAULT VALUES"
 }
 
+// ParseSQL return parsed SQL
+func (commonDialect) ParseSQL(sql string) string {
+	return sql
+}
+
 // BuildKeyName returns a valid key name (foreign key, index key) for the given table, field and reference
 func (DefaultForeignKeyNamer) BuildKeyName(kind, tableName string, fields ...string) string {
 	keyName := fmt.Sprintf("%s_%s_%s", kind, tableName, strings.Join(fields, "_"))

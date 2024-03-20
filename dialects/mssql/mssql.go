@@ -136,10 +136,10 @@ func (s mssql) RemoveIndex(tableName string, indexName string) error {
 func (s mssql) HasForeignKey(tableName string, foreignKeyName string) bool {
 	var count int
 	currentDatabase, tableName := currentDatabaseAndTable(&s, tableName)
-	s.db.QueryRow(`SELECT count(*) 
-	FROM sys.foreign_keys as F inner join sys.tables as T on F.parent_object_id=T.object_id 
-		inner join information_schema.tables as I on I.TABLE_NAME = T.name 
-	WHERE F.name = ? 
+	s.db.QueryRow(`SELECT count(*)
+	FROM sys.foreign_keys as F inner join sys.tables as T on F.parent_object_id=T.object_id
+		inner join information_schema.tables as I on I.TABLE_NAME = T.name
+	WHERE F.name = ?
 		AND T.Name = ? AND I.TABLE_CATALOG = ?;`, foreignKeyName, tableName, currentDatabase).Scan(&count)
 	return count > 0
 }
@@ -218,6 +218,11 @@ func (mssql) DefaultValueStr() string {
 // NormalizeIndexAndColumn returns argument's index name and column name without doing anything
 func (mssql) NormalizeIndexAndColumn(indexName, columnName string) (string, string) {
 	return indexName, columnName
+}
+
+// ParseSQL return parsed SQL
+func (mssql) ParseSQL(sql string) string {
+	return sql
 }
 
 func currentDatabaseAndTable(dialect gorm.Dialect, tableName string) (string, string) {
